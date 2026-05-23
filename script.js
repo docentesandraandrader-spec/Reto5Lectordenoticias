@@ -3,8 +3,9 @@ const cargando = document.getElementById('cargando');
 const errorDiv = document.getElementById('error');
 const btnRefrescar = document.getElementById('btnRefrescar');
 
-// Usando una API pública gratuita (NewsAPI - necesitarás tu propia clave)
-const API_KEY = 'TU_API_KEY_AQUI'; // ← Cambia esto por tu clave
+// === TU API KEY ===
+const API_KEY = '1f5f9f8c7e5d4c3b2a1f9e8d7c6b5a4f';
+
 const URL = `https://newsapi.org/v2/top-headlines?country=mx&apiKey=${API_KEY}`;
 
 async function cargarNoticias() {
@@ -15,18 +16,18 @@ async function cargarNoticias() {
     try {
         const respuesta = await fetch(URL);
         
-        if (!respuesta.ok) throw new Error('No se pudieron cargar las noticias');
+        if (!respuesta.ok) throw new Error('Error al cargar las noticias');
 
         const datos = await respuesta.json();
 
-        if (datos.articles.length === 0) {
-            throw new Error('No hay noticias disponibles');
+        if (datos.articles && datos.articles.length > 0) {
+            mostrarNoticias(datos.articles);
+        } else {
+            throw new Error('No se encontraron noticias');
         }
 
-        mostrarNoticias(datos.articles);
-
     } catch (error) {
-        errorDiv.textContent = `❌ Error: ${error.message}`;
+        errorDiv.textContent = `❌ ${error.message}`;
         errorDiv.style.display = 'block';
     } finally {
         cargando.style.display = 'none';
@@ -42,7 +43,7 @@ function mostrarNoticias(noticias) {
             ${noticia.urlToImage ? `<img src="${noticia.urlToImage}" alt="${noticia.title}">` : ''}
             <div class="info-noticia">
                 <h3>${noticia.title}</h3>
-                <p>${noticia.description ? noticia.description.substring(0, 150) + '...' : 'Sin descripción disponible.'}</p>
+                <p>${noticia.description ? noticia.description.substring(0, 160) + '...' : 'Sin descripción disponible.'}</p>
                 <a href="${noticia.url}" target="_blank">Leer noticia completa →</a>
             </div>
         `;
@@ -51,8 +52,8 @@ function mostrarNoticias(noticias) {
     });
 }
 
-// Evento del botón refrescar
+// Evento del botón
 btnRefrescar.addEventListener('click', cargarNoticias);
 
-// Cargar noticias al iniciar
+// Cargar noticias automáticamente al abrir la página
 cargarNoticias();
