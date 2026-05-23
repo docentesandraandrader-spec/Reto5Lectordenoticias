@@ -1,37 +1,38 @@
+// ==================== SCRIPT.JS - VERSIÓN SIMPLE Y FUNCIONAL ====================
+
 const contenedor = document.getElementById('contenedor-noticias');
 const cargando = document.getElementById('cargando');
 const errorDiv = document.getElementById('error');
 const btnRefrescar = document.getElementById('btnRefrescar');
 
-// Datos de ejemplo (Mock Data) - Funciona sin problemas
 const noticiasMock = [
     {
-        title: "México avanza en tecnología e inteligencia artificial",
-        description: "El país se posiciona como uno de los líderes en adopción de nuevas tecnologías en América Latina.",
+        title: "México lidera en adopción de inteligencia artificial en Latinoamérica",
+        description: "Según un nuevo estudio, México se posiciona como uno de los países con mayor crecimiento en IA.",
         link: "#",
         image: "https://picsum.photos/600/300?random=1"
     },
     {
-        title: "Nuevo récord de exportaciones mexicanas en 2026",
-        description: "Las exportaciones del país alcanzaron cifras históricas durante el primer trimestre del año.",
+        title: "UVEG lanza nueva plataforma digital para estudiantes",
+        description: "La Universidad Virtual del Estado de Guanajuato presenta mejoras significativas en su sistema educativo.",
         link: "#",
         image: "https://picsum.photos/600/300?random=2"
     },
     {
-        title: "Innovación educativa: UVEG implementa nuevas herramientas digitales",
-        description: "La universidad virtual fortalece su plataforma con nuevas funcionalidades para sus estudiantes.",
+        title: "Economía mexicana muestra signos de recuperación en 2026",
+        description: "Expertos destacan el crecimiento en sectores tecnológicos y de servicios.",
         link: "#",
         image: "https://picsum.photos/600/300?random=3"
     }
 ];
 
-function mostrarNoticias(noticias) {
+function mostrarNoticias() {
     contenedor.innerHTML = '';
-    
-    noticias.forEach(noticia => {
+
+    noticiasMock.forEach(noticia => {
         const articulo = document.createElement('div');
         articulo.className = 'noticia';
-
+        
         articulo.innerHTML = `
             <img src="${noticia.image}" alt="${noticia.title}">
             <div class="info-noticia">
@@ -40,7 +41,6 @@ function mostrarNoticias(noticias) {
                 <a href="${noticia.link}" target="_blank">Leer noticia completa →</a>
             </div>
         `;
-
         contenedor.appendChild(articulo);
     });
 }
@@ -49,15 +49,14 @@ function cargarNoticias() {
     cargando.style.display = 'block';
     errorDiv.style.display = 'none';
 
-    // Simulamos una pequeña espera
     setTimeout(() => {
-        mostrarNoticias(noticiasMock);
+        mostrarNoticias();
         cargando.style.display = 'none';
-    }, 800);
+    }, 600);
 }
 
-// Botón de actualizar
+// Eventos
 btnRefrescar.addEventListener('click', cargarNoticias);
 
-// Cargar al iniciar la página
+// Cargar al iniciar
 cargarNoticias();
