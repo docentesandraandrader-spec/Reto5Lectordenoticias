@@ -3,8 +3,8 @@ const cargando = document.getElementById('cargando');
 const errorDiv = document.getElementById('error');
 const btnRefrescar = document.getElementById('btnRefrescar');
 
-// Usando una API pública gratuita sin clave (The Guardian)
-const URL = 'https://content.guardianapis.com/search?api-key=test&show-fields=thumbnail,trailText&order-by=newest';
+// API que funciona mejor en GitHub Pages
+const URL = 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/mundo/rss.xml';
 
 async function cargarNoticias() {
     contenedor.innerHTML = '';
@@ -17,10 +17,9 @@ async function cargarNoticias() {
         if (!respuesta.ok) throw new Error('Error al cargar las noticias');
 
         const datos = await respuesta.json();
-        const noticias = datos.response.results;
-
-        if (noticias && noticias.length > 0) {
-            mostrarNoticias(noticias);
+        
+        if (datos.items && datos.items.length > 0) {
+            mostrarNoticias(datos.items);
         } else {
             throw new Error('No se encontraron noticias');
         }
@@ -39,11 +38,10 @@ function mostrarNoticias(noticias) {
         articulo.className = 'noticia';
 
         articulo.innerHTML = `
-            ${noticia.fields && noticia.fields.thumbnail ? `<img src="${noticia.fields.thumbnail}" alt="${noticia.webTitle}">` : ''}
             <div class="info-noticia">
-                <h3>${noticia.webTitle}</h3>
-                <p>${noticia.fields && noticia.fields.trailText ? noticia.fields.trailText : 'Sin descripción disponible.'}</p>
-                <a href="${noticia.webUrl}" target="_blank">Leer noticia completa →</a>
+                <h3>${noticia.title}</h3>
+                <p>${noticia.description ? noticia.description.substring(0, 160) + '...' : 'Sin descripción disponible.'}</p>
+                <a href="${noticia.link}" target="_blank">Leer noticia completa →</a>
             </div>
         `;
 
@@ -51,8 +49,8 @@ function mostrarNoticias(noticias) {
     });
 }
 
-// Botón actualizar
+// Botón de actualizar
 btnRefrescar.addEventListener('click', cargarNoticias);
 
-// Cargar al iniciar
+// Cargar automáticamente
 cargarNoticias();
